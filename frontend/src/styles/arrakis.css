@@ -1,0 +1,143 @@
+/* arrakis.css - Global design tokens and base styles */
+
+/* Design Tokens */
+:root {
+    /* Light to dark sand palette */
+    --sand-light:   #e8b86d;
+    --sand-pale:    #f5dba0;
+    --sand-warm:    #7a4515;
+    --sand-mid:     #3d2006;
+    --sand-deep:    #1a0e05;
+
+    /* The spice! */
+    --spice-orange: #d4521a;
+    --spice-glow:   #ff8c3a;
+
+    /* Space and sky */
+    --space-dark:   #04080f;
+
+    /* Text */
+    --text-primary:     #f0d4a0;
+    --text-secondary:   #b8956a;
+    --text-muted:       #7a5c3a;
+
+    /* Borders */
+    --border-spce: rgba(196, 122, 30, 0.35);
+
+    /* Fonts */
+    --font-display: 'Cinzel', Georgia, serif;
+    --font-body:    'Crimson Text', Georgia, serif;
+
+    /* Spacing and shape */
+    --radius-sm: 2px;
+    --radius-md: 3px;
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Make the app fill the full browser window */
+html, body, #root {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: var(--font-body);
+    background: var(--space-dark);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Buttons and textareas inherit custom font */
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+}
+
+textarea {
+    font-family: inherit;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 4px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(196, 122, 30, 0.3);
+    border-radius: 2px;
+}
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(196, 122, 30, 0.3) transparent;
+}
+
+/* Shared animation keyframes */
+@keyframes shimmer {
+    0% {
+        opacity: 0.3;
+        transform: translateX(-5%);
+    }
+    100% {
+        opacity: 0.8;
+        transform: translateX(5%);
+    }
+}
+
+@keyframes wormPulse {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Animation for rotating worm's teeth */
+@keyframes rotateOuterTeeth {
+    to {
+        transform: rotate(360deg);
+    }
+}
+@keyframes rotateMidTeeth {
+    to {
+        transform: rotate(360deg);
+    }
+}
+@keyframes rotateInnerTeeth {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes corePulse {
+    0%, 100% {
+        transform: scale(0.85);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+@keyframes msgIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
