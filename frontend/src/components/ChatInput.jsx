@@ -1,6 +1,28 @@
 // ChatInput.jsx - The input bar at the bottom, textarea and send button
 
-export default function ChatInput() {
+import { useState } from 'react'
+
+export default function ChatInput({ onSend, isThinking }) {
+
+    // Local state just for input value
+    const [value, setValue] = useState('')
+
+    function handleSubmit() {
+        // Don't send empty messages or interrupt the bot mid-response
+        if (!value.trim() || isThinking) return
+
+        onSend(value.trim())
+        setValue('')
+    }
+
+    function handleKeyDown(e) {
+        // Submit on Enter, but allow Shift+Enter for a newline
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault()
+            handleSubmit()
+        }
+    }
+
     return (
         <div style={{
             padding: '14px 20px 16px',
@@ -17,6 +39,10 @@ export default function ChatInput() {
             }}>
                 <textarea
                     rows={1}
+                    value={value}
+                    onChange={e => setValue(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    disabled={isThinking}
                     placeholder="Speak your question into the desert wind..."
                     style={{
                         flex: 1,
@@ -30,21 +56,27 @@ export default function ChatInput() {
                         minHeight: '44px',
                         lineHeight: 1.55,
                         outline: 'none',
+                        opacity: isThinking ? 0.5 : 1,
                     }}
                 />
 
                 {/* Send button */}
-                <button style={{
-                    width: '44px',
-                    height: '44px',
-                    background: 'linear-gradient(135deg, #7a3510, #4a2008)',
-                    border: '1px solid rgba(196,122,30,0.5)',
-                    borderRadius: 'var(--radius-md)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                }}>
+                <button
+                    onClick={handleSubmit}
+                    disabled={isThinking || !value.trim()}
+                    style={{
+                        width: '44px',
+                        height: '44px',
+                        background: 'linear-gradient(135deg, #7a3510, #4a2008)',
+                        border: '1px solid rgba(196,122,30,0.5)',
+                        borderRadius: 'var(--radius-md)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                        opacity: (isThinking || !value.trim()) ? 0.4 : 1,
+                        cursor: (isThinking || !value.trim()) ? 'not-allowed' : 'pointer'
+                    }}>
                     {/* Arrow icon */}
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                         <path

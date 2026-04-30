@@ -1,12 +1,23 @@
 // ChatWindow.jsx - The scrollable message area
 
-export default function ChatWindow() {
-    // Hardcoded for now just to see what messages look like.
-    const messages = [
-        { id: 1, role: 'user', text: 'Who are the Fremen?' },
-        { id: 2, role: 'bot', text: 'The Fremen are the indigenous people of Arrakis, hardened by generations of life in the deep desert. They are fierce warriors, expert survivalists, and the keepers of a secret dream: to transform their world into a paradise.'},
-        { id: 3, role: 'user', text: 'What is the spice melange?'},
-    ]
+import { useEffect, useRef } from 'react'
+
+export default function ChatWindow({ messages, isThinking }) {
+
+    // Reference to real DOM element
+    const bottomRef = useRef(null)
+
+    // Can scroll to bottom whenever messages change
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [messages, isThinking])
+
+    // // Hardcoded for now just to see what messages look like.
+    // const messages = [
+    //     { id: 1, role: 'user', text: 'Who are the Fremen?' },
+    //     { id: 2, role: 'bot', text: 'The Fremen are the indigenous people of Arrakis, hardened by generations of life in the deep desert. They are fierce warriors, expert survivalists, and the keepers of a secret dream: to transform their world into a paradise.'},
+    //     { id: 3, role: 'user', text: 'What is the spice melange?'},
+    // ]
 
     return (
         <div style={{
@@ -17,6 +28,22 @@ export default function ChatWindow() {
             flexDirection: 'column',
             gap: '18px'
         }}>
+
+            {/* Show a placeholder when there are no messages yet */}
+            {messages.length === 0 && (
+                <div style={{
+                    margin: 'auto',
+                    textAlign: 'center',
+                    color: 'var(--text-muted)',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '11px',
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                }}>
+                    The desert awaits your question
+                </div>
+            )}
+
             {messages.map(msg => (
                 <div
                     key={msg.id}
@@ -26,7 +53,8 @@ export default function ChatWindow() {
                         maxWidth: '88%',
                         // User messages sit on the right, bot on the left
                         alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                        flexDirection: msg.role === 'user' ? 'row-reverse' : 'row'
+                        flexDirection: msg.role === 'user' ? 'row-reverse' : 'row',
+                        animation: 'msgIn 0.3s ease-out',
                     }}
                 >
                     {/* Avatar circle */}
@@ -87,6 +115,24 @@ export default function ChatWindow() {
                     </div>
                 </div>
             ))}
+
+            {/* Thinking indicator - visible while waiting on backend */}
+            {isThinking && (
+                <div style={{
+                    alignSelf: 'flex-start',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '9px',
+                    letterSpacing: '0.18em',
+                    textTransform: 'uppercase',
+                    color: 'var(--spice-orange)',
+                    animation: 'wormPulse 2s ease-in-out infinite',
+                }}>
+                    Consulting the spice...
+                </div>
+            )}
+
+            {/* Invisible div at the bottom. Scrolled into view on new messages */}
+            <div ref={bottomRef} />
         </div>
     )
 }
