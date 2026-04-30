@@ -2,8 +2,9 @@
 
 import { useEffect, useRef } from 'react'
 import SandwormLoader from './SandwormLoader'
+import WelcomeCard    from './WelcomeCard'
 
-export default function ChatWindow({ messages, isThinking }) {
+export default function ChatWindow({ messages, isThinking, onStarter }) {
 
     // Reference to real DOM element
     const bottomRef = useRef(null)
@@ -31,19 +32,7 @@ export default function ChatWindow({ messages, isThinking }) {
         }}>
 
             {/* Show a placeholder when there are no messages yet */}
-            {messages.length === 0 && (
-                <div style={{
-                    margin: 'auto',
-                    textAlign: 'center',
-                    color: 'var(--text-muted)',
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '11px',
-                    letterSpacing: '0.14em',
-                    textTransform: 'uppercase',
-                }}>
-                    The desert awaits your question
-                </div>
-            )}
+            {messages.length === 0 && <WelcomeCard onStarter={onStarter} />}
 
             {messages.map(msg => (
                 <div

@@ -17,7 +17,7 @@ export default function Header() {
                 <circle cx="18" cy="18" r="16" stroke="rgba(196,122,30,0.5)" strokeWidth="0.8"/>
                 <circle cx="18" cy="18" r="11" stroke="rgba(196,122,30,0.5)" strokeWidth="0.6"/>
                 <path d="M18 5 L24 18 L18 31 L12 18 Z" stroke="rgba(196,122,30,0.6)" strokeWidth="1"/>
-                <path d="M15 18 L18 12 L31 18 L18 24 Z" stroke="rgba(196,122,30,0.4)" strokeWidth="0.7"/>
+                <path d="M5 18 L18 12 L31 18 L18 24 Z" stroke="rgba(196,122,30,0.4)" strokeWidth="0.7"/>
                 <circle cx="18" cy="18" r="2.5" fill="rgba(212,82,26,0.7)"/>
             </svg>
 
