@@ -1,6 +1,7 @@
 // ChatWindow.jsx - The scrollable message area
 
 import { useEffect, useRef } from 'react'
+import SandwormLoader from './SandwormLoader'
 
 export default function ChatWindow({ messages, isThinking }) {
 
@@ -117,19 +118,7 @@ export default function ChatWindow({ messages, isThinking }) {
             ))}
 
             {/* Thinking indicator - visible while waiting on backend */}
-            {isThinking && (
-                <div style={{
-                    alignSelf: 'flex-start',
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '9px',
-                    letterSpacing: '0.18em',
-                    textTransform: 'uppercase',
-                    color: 'var(--spice-orange)',
-                    animation: 'wormPulse 2s ease-in-out infinite',
-                }}>
-                    Consulting the spice...
-                </div>
-            )}
+            {isThinking && <SandwormLoader />}
 
             {/* Invisible div at the bottom. Scrolled into view on new messages */}
             <div ref={bottomRef} />
