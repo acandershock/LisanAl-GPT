@@ -19,10 +19,11 @@ Note: you will need an ngrok account to run this application. Sign up for free a
 ```
 cd backend
 ```
-2. Then, run all cells in the Jupyter Notebook by clicking 'Run All.' Make sure you are connected to a Collab GPU!
-3. In Cell 3b, update the auth_token variable to your value at https://dashboard.ngrok.com/get-started/your-authtoken.
+2. Make sure you have all the book PDFs in your Google drive under the path 'content/drive/MyDrive.' You can just find your 'MyDrive' folder and throw them in there.
+3. Then, run all cells in the Jupyter Notebook by clicking 'Run All.' Make sure you are connected to a Collab GPU!
+4. In Cell 3b, update the auth_token variable to your value at https://dashboard.ngrok.com/get-started/your-authtoken.
 - **IMPORTANT**: Do NOT push your auth_token to the repo!!!!
-4. Copy the output from the print statement (`print_url`). For example is this is your output:
+5. Copy the output from the print statement (`print_url`). For example is this is your output:
 ```
 Your public API URL= NgrokTunnel: "https://a-b-c.ngrok-free.dev" -> "http://localhost:5000"
 ```
