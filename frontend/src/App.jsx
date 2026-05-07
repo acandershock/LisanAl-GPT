@@ -6,7 +6,7 @@ import Header     from './components/Header'
 import ChatWindow from './components/ChatWindow'
 import ChatInput  from './components/ChatInput'
 
-const REACT_APP_API_URL="https://decency-reference-mustang.ngrok-free.dev"; // change this every time
+const REACT_APP_API_URL="https://upwind-stylist-dwelling.ngrok-free.dev"; // change this every time
 
 export default function App() {
 
@@ -19,13 +19,11 @@ export default function App() {
 
   // Runs when user submits a message
   async function handleSend(text) {
-    const userMessage = {
-      id: Date.now(),
-      role: 'user',
-      text,
-    }
+    const userMessage = { id: Date.now(), role: 'user', text }
     setMessages(prev => [...prev, userMessage])
     setIsThinking(true)
+
+    const botId = Date.now() + 1
 
     try {
       const response = await fetch(`${REACT_APP_API_URL}/generate`, {
@@ -34,27 +32,32 @@ export default function App() {
         body: JSON.stringify({ prompt: text }),
       })
 
-      const data = await response.json()
+      // Add an empty bot message and hide the loader as soon as the stream starts
+      setMessages(prev => [...prev, { id: botId, role: 'bot', text: '' }])
+      setIsThinking(false)
 
-      const botMessage = {
-        id: Date.now() + 1,
-        role: 'bot',
-        text: data.response,
+      const reader = response.body.getReader()
+      const decoder = new TextDecoder()
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        const chunk = decoder.decode(value, { stream: true })
+        setMessages(prev =>
+          prev.map(msg => msg.id === botId ? { ...msg, text: msg.text + chunk } : msg)
+        )
       }
-      setMessages(prev => [...prev, botMessage])
 
     } catch (error) {
-      const errMessage = {
-        id: Date.now() + 1,
+      setMessages(prev => [...prev, {
+        id: botId,
         role: 'bot',
         text: 'Error reaching the backend. Is Colab running?',
-      }
-      setMessages(prev => [...prev, errMessage])
-
+      }])
     } finally {
       setIsThinking(false)
+    }
   }
-}
 
   return (
     <>
