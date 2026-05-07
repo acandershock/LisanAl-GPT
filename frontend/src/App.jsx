@@ -6,6 +6,8 @@ import Header     from './components/Header'
 import ChatWindow from './components/ChatWindow'
 import ChatInput  from './components/ChatInput'
 
+const REACT_APP_API_URL="https://a-b-c.dev"; // change this every time
+
 export default function App() {
 
   // messages: the array of chat messages displayed on screen
@@ -16,29 +18,43 @@ export default function App() {
   const [isThinking, setIsThinking] = useState(false)
 
   // Runs when user submits a message
-  function handleSend(text) {
-    // Build new user message object
+  async function handleSend(text) {
     const userMessage = {
       id: Date.now(),
       role: 'user',
       text,
     }
-
-    // Add message object to messages array
     setMessages(prev => [...prev, userMessage])
-
-    // Simulate bot reply for now.
     setIsThinking(true)
-    setTimeout(() => {
+
+    try {
+      const response = await fetch(`${REACT_APP_API_URL}/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: text }),
+      })
+
+      const data = await response.json()
+
       const botMessage = {
         id: Date.now() + 1,
         role: 'bot',
-        text: 'The spice must flow. (Backend not connected yet)',
+        text: data.response,
       }
       setMessages(prev => [...prev, botMessage])
+
+    } catch (error) {
+      const errMessage = {
+        id: Date.now() + 1,
+        role: 'bot',
+        text: 'Error reaching the backend. Is Colab running?',
+      }
+      setMessages(prev => [...prev, errMessage])
+
+    } finally {
       setIsThinking(false)
-    }, 1000)
   }
+}
 
   return (
     <>
