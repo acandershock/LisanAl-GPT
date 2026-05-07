@@ -6,7 +6,7 @@ import Header     from './components/Header'
 import ChatWindow from './components/ChatWindow'
 import ChatInput  from './components/ChatInput'
 
-const REACT_APP_API_URL="https://a-b-c.dev"; // change this every time
+const REACT_APP_API_URL="https://decency-reference-mustang.ngrok-free.dev"; // change this every time
 
 export default function App() {
 
